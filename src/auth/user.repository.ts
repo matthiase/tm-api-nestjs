@@ -8,10 +8,10 @@ import * as bcrypt from 'bcrypt'
 export class UserRepository extends Repository<User> {
   async createUser(credentialsDto: CredentialsDto): Promise<void> {
     const { username, password } = credentialsDto
+    const salt = await bcrypt.genSalt()
     const user = new User()
     user.username = username
-    user.salt = bcrypt.genSalt()
-    user.password = await bcrypt.hash(password, user.salt)
+    user.password = await bcrypt.hash(password, salt)
 
     try {
       await user.save()
@@ -22,5 +22,14 @@ export class UserRepository extends Repository<User> {
         throw new InternalServerErrorException()
       }
     }
+  }
+
+  async validateCredentials(credentialsDto: CredentialsDto): Promise<string> {
+    const { username, password } = credentialsDto
+    const user = await this.findOne({ username: username })
+    if (user && await bcrypt.compare(password, user.password)) {
+      return user.username
+    }
+    return null
   }
 }
