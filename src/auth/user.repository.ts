@@ -27,7 +27,7 @@ export class UserRepository extends Repository<User> {
   async validateCredentials(credentialsDto: CredentialsDto): Promise<string> {
     const { username, password } = credentialsDto
     const user = await this.findOne({ username: username })
-    if (user && await bcrypt.compare(password, user.password)) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       return user.username
     }
     return null
