@@ -1,6 +1,7 @@
 import { Body, Controller, Post, ValidationPipe } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { CredentialsDto } from './dto/credentials.dto'
+import { JwtPayload } from './jwt-payload.interface'
 
 @Controller('auth')
 export class AuthController {
@@ -9,7 +10,7 @@ export class AuthController {
   @Post('/signup')
   createUser(
     @Body(ValidationPipe) credentialsDto: CredentialsDto
-  ): Promise<void> {
+  ): Promise<JwtPayload> {
     return this.authService.createUser(credentialsDto)
   }
 

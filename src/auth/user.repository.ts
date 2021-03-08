@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt'
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async createUser(credentialsDto: CredentialsDto): Promise<void> {
+  async createUser(credentialsDto: CredentialsDto): Promise<User> {
     const { username, password } = credentialsDto
     const salt = await bcrypt.genSalt()
     const user = new User()
@@ -15,6 +15,7 @@ export class UserRepository extends Repository<User> {
 
     try {
       await user.save()
+      return user
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException('Username already exists')
@@ -24,11 +25,11 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async validateCredentials(credentialsDto: CredentialsDto): Promise<string> {
+  async validateCredentials(credentialsDto: CredentialsDto): Promise<User> {
     const { username, password } = credentialsDto
     const user = await this.findOne({ username: username })
     if (user && (await bcrypt.compare(password, user.password))) {
-      return user.username
+      return user
     }
     return null
   }

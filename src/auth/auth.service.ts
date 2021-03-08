@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CredentialsDto } from './dto/credentials.dto'
 import { JwtPayload } from './jwt-payload.interface'
+import { User } from './user.entity'
 import { UserRepository } from './user.repository'
 
 @Injectable()
@@ -13,18 +14,23 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async createUser(credentialsDto: CredentialsDto): Promise<void> {
-    return this.userRepository.createUser(credentialsDto)
+  async createUser(credentialsDto: CredentialsDto): Promise<JwtPayload> {
+    const user = await this.userRepository.createUser(credentialsDto)
+    const payload: JwtPayload = {
+      id: user.id,
+      username: user.username
+    }
+    return payload
   }
 
   async signIn(
     credentialsDto: CredentialsDto
   ): Promise<{ accessToken: string }> {
-    const username = await this.userRepository.validateCredentials(
+    const user: User = await this.userRepository.validateCredentials(
       credentialsDto
     )
-    if (username) {
-      const jwtPayload: JwtPayload = { username: username }
+    if (user) {
+      const jwtPayload: JwtPayload = { id: user.id, username: user.username }
       const accessToken = this.jwtService.sign(jwtPayload)
       return { accessToken }
     }
