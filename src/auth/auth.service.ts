@@ -23,12 +23,8 @@ export class AuthService {
     return payload
   }
 
-  async signIn(
-    credentialsDto: CredentialsDto
-  ): Promise<{ accessToken: string }> {
-    const user: User = await this.userRepository.validateCredentials(
-      credentialsDto
-    )
+  async signIn(credentialsDto: CredentialsDto): Promise<{ accessToken: string }> {
+    const user: User = await this.userRepository.validateCredentials(credentialsDto)
     if (user) {
       const jwtPayload: JwtPayload = { id: user.id, username: user.username }
       const accessToken = this.jwtService.sign(jwtPayload)
