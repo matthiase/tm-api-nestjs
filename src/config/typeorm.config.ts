@@ -1,11 +1,13 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm'
+import * as config from 'config'
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
-  type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  database: 'taskmanagement',
+  type: config.get('database.type'),
+  host: config.get('database.host'),
+  port: config.get('database.port'),
+  username: config.get('database.user'),
+  password: config.get('database.password'),
+  database: config.get('database.name'),
   autoLoadEntities: true,
-  synchronize: true
+  synchronize: config.get('database.synchronize') || false
 }

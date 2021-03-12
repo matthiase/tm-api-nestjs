@@ -6,6 +6,7 @@ import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { JwtStrategy } from './jwt.strategy'
 import { UserRepository } from './user.repository'
+import * as config from 'config'
 
 @Module({
   imports: [
@@ -13,8 +14,8 @@ import { UserRepository } from './user.repository'
       defaultStrategy: 'jwt'
     }),
     JwtModule.register({
-      secret: 'secret',
-      signOptions: { expiresIn: 3600 }
+      secret: config.get('jwt.secret'),
+      signOptions: { expiresIn: config.get('jwt.expiresIn') }
     }),
     TypeOrmModule.forFeature([UserRepository])
   ],

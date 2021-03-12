@@ -1,0 +1,5 @@
+database:
+  synchronize: false
+
+jwt:
+  secret: qc3w6uHiaECTRuoQBayeG7qYijvJjJoQVKZZNmJbj97xJMRk
