@@ -16,11 +16,11 @@ export class AuthService {
 
   async createUser(credentialsDto: CredentialsDto): Promise<JwtPayload> {
     const user = await this.userRepository.createUser(credentialsDto)
-    const payload: JwtPayload = {
+    const jwtPayload: JwtPayload = {
       id: user.id,
       username: user.username
     }
-    return payload
+    return jwtPayload
   }
 
   async signIn(credentialsDto: CredentialsDto): Promise<{ accessToken: string }> {
