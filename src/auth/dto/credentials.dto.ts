@@ -1,4 +1,4 @@
-import { IsString, Matches, MaxLength, MinLength } from 'class-validator'
+import { IsString, Matches, MaxLength, MinLength } from "class-validator"
 
 export class CredentialsDto {
   @IsString()
@@ -11,7 +11,7 @@ export class CredentialsDto {
   @MaxLength(32)
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message:
-      'password must contain at least 1 upper case letter, 1 lower case letter, and 1 number or special character'
+      "password must contain at least 1 upper case letter, 1 lower case letter, and 1 number or special character"
   })
   password: string
 }

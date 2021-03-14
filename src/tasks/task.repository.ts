@@ -1,14 +1,14 @@
-import { InternalServerErrorException, Logger } from '@nestjs/common'
-import { User } from 'src/auth/user.entity'
-import { EntityRepository, Repository } from 'typeorm'
-import { CreateTaskDto } from './dto/create-task.dto'
-import { TaskFilterDto } from './dto/task-filter.dto'
-import { TaskStatus } from './task-status.enum'
-import { Task } from './task.entity'
+import { InternalServerErrorException, Logger } from "@nestjs/common"
+import { User } from "src/auth/user.entity"
+import { EntityRepository, Repository } from "typeorm"
+import { CreateTaskDto } from "./dto/create-task.dto"
+import { TaskFilterDto } from "./dto/task-filter.dto"
+import { TaskStatus } from "./task-status.enum"
+import { Task } from "./task.entity"
 
 @EntityRepository(Task)
 export class TaskRepository extends Repository<Task> {
-  private logger: Logger = new Logger('TaskRepository')
+  private logger: Logger = new Logger("TaskRepository")
   async createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
     const { title, description } = createTaskDto
     const task = new Task()
@@ -24,13 +24,13 @@ export class TaskRepository extends Repository<Task> {
 
   async getTasks(filterDto: TaskFilterDto, user: User): Promise<Task[]> {
     const { status, search } = filterDto
-    const query = this.createQueryBuilder('task')
-    query.andWhere('task.userId = :userId', { userId: user.id })
+    const query = this.createQueryBuilder("task")
+    query.andWhere("task.userId = :userId", { userId: user.id })
     if (status) {
-      query.andWhere('task.status = :status', { status })
+      query.andWhere("task.status = :status", { status })
     }
     if (search) {
-      query.andWhere('task.title LIKE :search OR task.description LIKE :search', { search: `%${search}%` })
+      query.andWhere("task.title LIKE :search OR task.description LIKE :search", { search: `%${search}%` })
     }
 
     try {

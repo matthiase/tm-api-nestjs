@@ -1,10 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
-import { InjectRepository } from '@nestjs/typeorm'
-import { CredentialsDto } from './dto/credentials.dto'
-import { JwtPayload } from './jwt-payload.interface'
-import { User } from './user.entity'
-import { UserRepository } from './user.repository'
+import { Injectable, UnauthorizedException } from "@nestjs/common"
+import { JwtService } from "@nestjs/jwt"
+import { InjectRepository } from "@nestjs/typeorm"
+import { CredentialsDto } from "./dto/credentials.dto"
+import { JwtPayload } from "./jwt-payload.interface"
+import { User } from "./user.entity"
+import { UserRepository } from "./user.repository"
 
 @Injectable()
 export class AuthService {
@@ -30,6 +30,6 @@ export class AuthService {
       const accessToken = this.jwtService.sign(jwtPayload)
       return { accessToken }
     }
-    throw new UnauthorizedException('Invalid credentials')
+    throw new UnauthorizedException("Invalid credentials")
   }
 }

@@ -1,8 +1,8 @@
-import { Task } from 'src/tasks/task.entity'
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm'
+import { Task } from "src/tasks/task.entity"
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm"
 
-@Entity('users')
-@Unique(['username'])
+@Entity("users")
+@Unique(["username"])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
@@ -13,6 +13,6 @@ export class User extends BaseEntity {
   @Column()
   password: string
 
-  @OneToMany((type) => Task, (task) => task.user, { eager: true })
+  @OneToMany(() => Task, (task) => task.user, { eager: true })
   tasks: Task[]
 }
